@@ -40,5 +40,14 @@ class HttpRequester:
             result = []
         return result
 
+    def get_form(self, card_type):
+        url = self.form_link('forms/{}'.format(card_type))
+        try:
+            response = self.requester.get(url)
+            result = response.json()
+        except requests.RequestException:
+            result = []
+        return result
+
     def send(self):
         pass

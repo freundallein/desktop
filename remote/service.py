@@ -10,8 +10,7 @@ from remote.requester import HttpRequester
 class RemoteService(QThread):
     TAG = 'REMOTE SERVICE'
     data_received = pyqtSignal(dict)
-    statusOK = pyqtSignal()
-    statusSTANDBY = pyqtSignal()
+    status_changed = pyqtSignal(str)
 
     def __init__(self, parent, config):
         super(RemoteService, self).__init__(parent)
@@ -23,10 +22,10 @@ class RemoteService(QThread):
         self.logger.log(message)
 
     def send_status_OK(self):
-        self.statusOK.emit()
+        self.status_changed.emit('OK')
 
     def send_status_STANDBY(self):
-        self.statusSTANDBY.emit()
+        self.status_changed.emit('STANDBY')
 
     def get_text_status(self, flag):
         return 'ON' if flag else 'OFF'
@@ -42,9 +41,16 @@ class RemoteService(QThread):
         self.log('send data from main thread: %s' % data)
 
     def get_data(self, data):
-        types = self.requester.get_types()
-        self.log('Types from server: %s' % types)
-        self.data_received.emit(types)
+        datatype = data.get('data')
+        if datatype == 'types':
+            types = self.requester.get_types()
+            self.log('Types from server: %s' % types)
+            self.data_received.emit(types)
+        elif datatype == 'form':
+            card_type = data.get('card_type')
+            form = self.requester.get_form(card_type)
+            self.log('Form from server: %s' % form)
+            self.data_received.emit(form)
 
     def run(self):
         while True:

@@ -30,9 +30,22 @@ class CheckServerHandler(tornado.web.RequestHandler):
 class CardTypesHandler(tornado.web.RequestHandler):
     @gen.coroutine
     def get(self):
-        data = {'types': ['discount', 'bonus', 'loyalty']}
+        data = {'types': ['discount', 'bonus', 'loyalty', 'fookyality',
+                          'friendship']}
         data = json.dumps(data)
         print('Send types: ' + data)
+        self.write(data)
+
+
+class FormSenderHandler(tornado.web.RequestHandler):
+    @gen.coroutine
+    def get(self, card_type):
+        data = {'form': {'fields': ['firstname', 'secondname', 'lastname',
+                                    'phone',
+                                    'email'],
+                         'mandatory': ['firstname', 'lastname', 'phone']}}
+        data = json.dumps(data)
+        print('Send form: ' + data)
         self.write(data)
 
 
@@ -51,6 +64,7 @@ class Application(tornado.web.Application):
         handlers = [
             (r"/server_status", CheckServerHandler),
             (r"/card_types", CardTypesHandler),
+            (r"/forms/(\w+)", FormSenderHandler),
             (r"/.*", MainHandler),
         ]
         settings = dict(
