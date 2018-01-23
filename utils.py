@@ -36,3 +36,11 @@ class Configurator:
                 if line.startswith('MACHINE_NAME'):
                     self.MACHINE_NAME = line.split('=')[1].strip()
         return self
+
+
+class FormValidator:
+    def __init__(self):
+        pass
+
+    def clean(self):
+        pass

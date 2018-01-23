@@ -30,8 +30,8 @@ class CheckServerHandler(tornado.web.RequestHandler):
 class CardTypesHandler(tornado.web.RequestHandler):
     @gen.coroutine
     def get(self):
-        data = {'types': ['discount', 'bonus', 'loyalty', 'fookyality',
-                          'friendship']}
+        data = {'types': ['discount', 'loyalty', 'fuckyoulity',
+                          'fatality', 'friendship']}
         data = json.dumps(data)
         print('Send types: ' + data)
         self.write(data)

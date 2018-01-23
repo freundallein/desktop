@@ -19,7 +19,7 @@ class Application(QMainWindow):
         super().__init__()
         self.DEBUG = config.debug
         self.widget_captain = WidgetCaptain(self)
-        self.data = None
+        self.data = {}
         self.setup_ui()
         self.start_remote_service()
 
@@ -46,10 +46,10 @@ class Application(QMainWindow):
     def type_button_clicked(self):
         card_type = self.sender().text()
         self.get_from_server.emit({'data': 'form',
-                            'card_type': card_type})
+                                   'card_type': card_type})
 
     def on_data_received(self, data):
-        self.data = data
+        self.data.update(data)
         datatype = list(data.keys())[0]
         if datatype == 'types':
             self.switch_screen('CARD_TYPE')
