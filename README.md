@@ -1,5 +1,5 @@
 # desktop
-Windows Desktop App for Terminal  
+Windows Desktop App for Terminal Usage  
 
 
 Desktop App based on PyQT 5.
